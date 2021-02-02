@@ -4,78 +4,8 @@
 #include "Time.h"
 #include "World.h"
 #include "Cube.h"
-
-const char* defaultVertexShader = "\n\
-#version 330\n\
-\n\
-uniform mat4 MVP;\n\
-in vec4 vpos;\n\
-out vec4 vertexColor;\n\
-\n\
-void main()\n\
-{\n\
-\n\
-gl_Position=MVP*vpos;\n\
-vertexColor=vec4(1.0f,1.0f,1.0f,1.0f);\n\
-\n\
-}\n\
-";
-
-
-const char* defaultFragmentShader = "\n\
-#version 330\n\
-\n\
-in vec4 vertexColor;\n\
-out vec4 fragColor;\n\
-\n\
-void main()\n\
-{\n\
-\n\
-fragColor=vertexColor;\n\
-\n\
-}\n\
-";
-
-
-
-
-const char* vertexShader = "\n\
-#version 330\n\
-\n\
-uniform mat4 MVP;\n\
-in vec4 vpos;\n\
-in vec2 vtex;\n\
-out vec2 ftex;\n\
-out vec4 vertexColor;\n\
-\n\
-void main()\n\
-{\n\
-\n\
-gl_Position=MVP*vpos;\n\
-vertexColor=vec4(1.0f,1.0f,1.0f,1.0f);\n\
-ftex=vtex;\n\
-\n\
-}\n\
-";
-
-
-const char* fragmentShader = "\n\
-#version 330\n\
-\n\
-in vec2 ftex;\n\
-in vec4 vertexColor;\n\
-uniform sampler2D texSampler;\n\
-out vec4 fragColor;\n\
-\n\
-void main()\n\
-{\n\
-\n\
-/*fragColor=vertexColor;*/\n\
-gl_FragColor=texture2D(texSampler,ftex);\n\
-\n\
-}\n\
-";
-
+#include <pugixml.hpp>
+#include "FileManager.h"
 
 GLint Init()
 {
@@ -95,8 +25,12 @@ World* CreateWorld()
 	Texture * cubeTop = new Texture();
 	cubeTop->Load("data/top.png");
 
-	GLSLShader *defaultShader = new GLSLShader(defaultVertexShader, defaultFragmentShader);
-	GLSLShader *shader = new GLSLShader(vertexShader, fragmentShader);
+	FileManager fman;
+	char* vs = fman.GetFileContents("data/vertexShader.txt");
+	char* fs = fman.GetFileContents("data/fragmentShader.txt");
+	char* dfs = fman.GetFileContents("data/defaultFragmentShader.txt");
+	GLSLShader *defaultShader = new GLSLShader(vs, dfs);
+	GLSLShader *shader = new GLSLShader(vs, fs);
 	State::defaultShader = defaultShader;
 
 	Material *materialSideCube = new Material(cubeSide, shader);

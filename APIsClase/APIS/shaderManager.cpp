@@ -1,5 +1,6 @@
 #include "shaderManager.h"
 
+int defaultShaderID = 0;
 //vertex shader basico
 //vertex -> vertex position
 //gl_Position-> la posicion de los vertices ya modificados
@@ -8,42 +9,7 @@
 // Modelo		-> guarda transformaciones, rotaciones, escalados, movimientos
 // Vista		-> transformaciones de camara, desde donde miramos
 // Proyeccion	-> frustrum, volumen de renderizado | orto perspectiva
-const char* vertexShader = "\n\
-#version 330\n\
-\n\
-uniform mat4 MVP;\n\
-in vec4 vpos;\n\
-in vec2 vtex;\n\
-out vec2 ftex;\n\
-out vec4 vertexColor;\n\
-\n\
-void main()\n\
-{\n\
-\n\
-gl_Position=MVP*vpos;\n\
-vertexColor=vec4(1.0f,1.0f,1.0f,1.0f);\n\
-ftex=vtex;\n\
-\n\
-}\n\
-";
 
-
-const char* fragmentShader = "\n\
-#version 330\n\
-\n\
-in vec2 ftex;\n\
-in vec4 vertexColor;\n\
-uniform sampler2D texSampler;\n\
-out vec4 fragColor;\n\
-\n\
-void main()\n\
-{\n\
-\n\
-/*fragColor=vertexColor;*/\n\
-gl_FragColor=texture2D(texSampler,ftex);\n\
-\n\
-}\n\
-";
 
 int compileShader(const char*shader, GLenum shaderType) 
 {
@@ -56,8 +22,11 @@ int compileShader(const char*shader, GLenum shaderType)
 	return shaderID;
 }
 
-int compileAndLinkShader(const char*vertexShader, const char*fragmentShader) 
+int compileAndLinkShader(const char*vertexShaderFile, const char*fragmentShaderFile)
 {
+	char* vertexShader = readFile(vertexShaderFile);
+	char* fragmentShader = readFile(fragmentShaderFile);
+
 	int programID, vertexID, fragmentID;
 	//empieza a hablar con la tarjeta grafica para reservar espacio
 	//para el codigo que le voy a pasar
@@ -89,4 +58,27 @@ GLint checkShaderError(GLint shaderID)
 		printf("Error en shader\n%s\n", infoLog);
 	}
 	return success;		
+}
+
+
+char * readFile(const char * fileName)
+{
+	char* contents = NULL;
+	//readonly -> "r"
+	FILE*file;
+	fopen_s(&file, fileName, "r");
+	if (file == NULL)
+		return NULL;
+
+	int fileLen = 0;
+	fseek(file, 0, SEEK_END);
+	fileLen = ftell(file);
+
+	fseek(file, 0, SEEK_SET);
+	contents = new char[fileLen + 1];
+
+	fread(contents, 1, fileLen, file);
+	contents[fileLen] = '\0';
+	fclose(file);
+	return contents;
 }

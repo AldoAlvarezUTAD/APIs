@@ -24,31 +24,32 @@ int main(int argc, char** argv)
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0, 0, 0, 1);
 
+	//creo shader
+	defaultShaderID = compileAndLinkShader("data/vertexShader.txt", "data/fragmentShader.txt");
+	//SetShaderID(triangle, shaderID);
+
 	camera * cam = CreateCamera(glm::vec3(0.0f, 0.0f, 1.0f),
 								glm::vec3(0.0f, 0.0f, 0.0f), 
 								glm::vec3(0.0f, 1.0f, 0.0f));
 
 
-	Object *triangle = CreateTriangle();
+	//Object *triangle = CreateTriangle();
+	Object *cube = CreateObjectFromFile("data/cube.msh");
 
 	//lo llevo a la tarjeta grafica
-	UploadObject(triangle);
+	UploadObject(cube);
 
-	//creo shader
-	int shaderID = compileAndLinkShader(vertexShader, fragmentShader);
-
-	SetShaderID(triangle, shaderID);
 
 	while (!glfwWindowShouldClose(window)) 
 	{
 		moveCamera(cam);
-		MoveTriangle(triangle);
+		MoveTriangle(cube);
 
 		//limpio el buffer anterior para que quede libre y poderlo usar despues
 		//de que lo cambie al final del frame
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		DrawObject(triangle, shaderID, cam);
+		DrawObject(cube, cam);
 		
 		glfwSwapBuffers(window);
 		//se ejecutan el resto de eventos, si es que hay

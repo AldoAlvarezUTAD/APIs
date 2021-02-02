@@ -19,6 +19,7 @@ struct Vertex {
 
 struct Mesh 
 {
+	int meshID;
 	std::vector<Vertex>*vertexList;
 	std::vector<unsigned int>*vertexIdx; //índice / orden de los vertices para la triangulacion
 	int numVertex;
@@ -32,10 +33,16 @@ struct Object
 	glm::vec3 pos;
 	glm::vec3 rot;
 	glm::vec3 scal;
-	Mesh* mesh;
-	Material * material;
+	std::vector<Mesh*>* meshes;
+	std::vector<Material*>* materials;
 };
 
 Object* CreateTriangle();
 void MoveTriangle(Object * obj);
-void SetShaderID(Object*obj, unsigned int shaderID);
+//void SetShaderID(Object*obj, unsigned int shaderID);
+void AddMesh(Object* obj, Mesh*mesh, Material *mat);
+void LoadMesh(Object* obj, const char* meshFile);
+Object*CreateObjectFromFile(const char* fileName);
+
+//std::vector<std::string> splitString(const std::string& str, char delim);
+

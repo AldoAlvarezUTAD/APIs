@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)ExternalLibs\glfw\include;$(SolutionDir)ExternalLibs\glew\include;$(SolutionDir)ExternalLibs\glm\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)ExternalLibs\glfw\lib-vc2017;$(SolutionDir)ExternalLibs\glew\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)ExternalLibs\glfw\include;$(SolutionDir)ExternalLibs\glew\include;$(SolutionDir)ExternalLibs\glm\include;$(SolutionDir)ExternalLibs\pugixml\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)ExternalLibs\glfw\lib-vc2017;$(SolutionDir)ExternalLibs\glew\lib;$(SolutionDir)ExternalLibs\pugixml\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)ExternalLibs\glfw\include;$(SolutionDir)ExternalLibs\glew\include;$(SolutionDir)ExternalLibs\glm\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)ExternalLibs\glfw\lib-vc2017;$(SolutionDir)ExternalLibs\glew\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)ExternalLibs\glfw\include;$(SolutionDir)ExternalLibs\glew\include;$(SolutionDir)ExternalLibs\glm\include;$(SolutionDir)ExternalLibs\pugixml\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)ExternalLibs\glfw\lib-vc2017;$(SolutionDir)ExternalLibs\glew\lib;$(SolutionDir)ExternalLibs\pugixml\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -93,7 +93,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);opengl32.lib;glfw3.lib;glew32s.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);opengl32.lib;glfw3.lib;glew32s.lib;pugixml.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -122,13 +122,14 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);opengl32.lib;glfw3.lib;glew32s.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);opengl32.lib;glfw3.lib;glew32s.lib;pugixml.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="GLRender.cpp" />
     <ClCompile Include="GLSLShader.cpp" />
     <ClCompile Include="main.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="FileManager.h" />
     <ClInclude Include="GLRender.h" />
     <ClInclude Include="GLSLShader.h" />
     <ClInclude Include="Material.h" />
@@ -158,6 +160,11 @@
     <ClInclude Include="TriangleRot.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="World.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\defaultFragmentShader.txt" />
+    <Text Include="data\fragmentShader.txt" />
+    <Text Include="data\vertexShader.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

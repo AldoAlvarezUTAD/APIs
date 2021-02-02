@@ -17,4 +17,4 @@ struct boIDS
 
 void UploadObject(Object* obj);
 void DeleteObject(Object*obj);
-void DrawObject(Object* obj, int shader, camera * cam);
+void DrawObject(Object* obj, camera * cam);

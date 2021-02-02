@@ -1,0 +1,11 @@
+#version 330
+in vec2 ftex;
+in vec4 vertexColor;
+uniform sampler2D texSampler;
+out vec4 fragColor;
+
+void main()
+{
+	/*fragColor=vertexColor;*/
+	gl_FragColor=texture2D(texSampler,ftex);
+}

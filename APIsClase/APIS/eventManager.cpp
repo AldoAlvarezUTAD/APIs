@@ -7,11 +7,11 @@ void keyCallback(GLFWwindow * window, int key, int scancode, int action, int mod
 	switch (action)
 	{
 	case GLFW_PRESS:
-		printf("Tecla presionada %d\n", key);
+		//printf("Tecla presionada %d\n", key);
 		keybEvent[key] = 1;
 		break;
 	case GLFW_RELEASE:
-		printf("Tecla liberada %d\n", key);
+		//printf("Tecla liberada %d\n", key);
 		keybEvent[key] = 0;
 		break;
 	default:
