@@ -135,17 +135,15 @@ void DrawObject(Object* obj, camera* cam, light * l)
 
 
 		//le paso al shader los valores que espera recibir como globales
-		glUniform1f(glGetUniformLocation(shader, "lightAmb"), 0.2f);
-		//glUniform1i(glGetUniformLocation(shader, "lightType"), l->type);
-		//glUniform3fv(glGetUniformLocation(shader, "lightPos"),1, &l->pos[0]);
+		glUniform1f(glGetUniformLocation(shader, "lightAmb"), 1.0f);
+		glUniform1i(glGetUniformLocation(shader, "lightType"), l->type);
+		glUniform3fv(glGetUniformLocation(shader, "lightPos"),1, &l->pos[0]);
 		glUniform3fv(glGetUniformLocation(shader, "lightDir"),1, &l->dir[0]);
 		glUniform3fv(glGetUniformLocation(shader, "eyePos"),1, &cam->position[0]);
 		glUniform3fv(glGetUniformLocation(shader, "lookAt"),3, &cam->lookAt[0]);
 		glUniform1i(glGetUniformLocation(shader, "matShininess"), (*matIt)->shininess);
 
-		//glColor3f(1.0f, 1.0f, 1.0f);
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		//glDrawArrays(GL_LINE_LOOP, 0, 3);
+
 		glDrawElements(GL_TRIANGLES, (*meshIt)->vertexIdx->size(), GL_UNSIGNED_INT, nullptr);
 	}
 }
