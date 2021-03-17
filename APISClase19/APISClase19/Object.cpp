@@ -134,13 +134,16 @@ void LoadMesh(Object* obj, const char* meshFile)
 			Material* mat = new Material;
 			mat->shaderID = defaultShaderID;
 			mat->texture = CreateTexture(materialNode.child("texture").text().as_string());
+			mat->shininess = materialNode.child("shininess").text().as_int();
 
 			Mesh* mesh = new Mesh;
-			std::vector<float>vertList = splitString<float>(bufferNode.child("coords").text().as_string(), ',');
-			std::vector<int>idxVertList = splitString<int>(bufferNode.child("indices").text().as_string(), ',');;
-			std::vector<float>textList = splitString<float>(bufferNode.child("texCoords").text().as_string(), ',');;
 			mesh->meshID = meshIDGenerator;
 			meshIDGenerator++;
+
+			std::vector<float>vertList = splitString<float>(bufferNode.child("coords").text().as_string(), ',');
+			std::vector<int>idxVertList = splitString<int>(bufferNode.child("indices").text().as_string(), ',');
+			std::vector<float>textList = splitString<float>(bufferNode.child("texCoords").text().as_string(), ',');
+			std::vector<float>normList = splitString<float>(bufferNode.child("normals").text().as_string(), ',');
 
 			//de cuantos en cuantos se cuenta 1 vertice
 			int vertexCompCount = bufferNode.child("coords").attribute("vertexCompCount").as_int();
@@ -151,6 +154,8 @@ void LoadMesh(Object* obj, const char* meshFile)
 			auto vit = vertList.begin();
 			//texture coords iterator
 			auto tcit = textList.begin();
+			//normals iterator
+			auto normit = normList.begin();
 			while (vit != vertList.end())
 			{
 				float x = (*vit); vit++;
@@ -158,8 +163,14 @@ void LoadMesh(Object* obj, const char* meshFile)
 				float z = (*vit); vit++;
 				float u = (*tcit); tcit++;
 				float v = (*tcit); tcit++;
+				float nx = (*normit); normit++;
+				float ny = (*normit); normit++;
+				float nz = (*normit); normit++;
 
-				mesh->vertexList->push_back(Vertex{ glm::vec4(x, y, z,1.0f), glm::vec2(u,v) });
+				mesh->vertexList->push_back(Vertex{
+					glm::vec4(x, y, z,1.0f),
+					glm::vec2(u,v),
+					glm::vec3(nx,ny,nz) });
 			}
 			mesh->vertexIdx = new std::vector<unsigned int>();
 			auto idxIt = idxVertList.begin();

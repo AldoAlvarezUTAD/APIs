@@ -57,7 +57,7 @@ void DeleteObject(Object* obj)
 	glDeleteVertexArrays(1, &boID.id);
 }
 
-void DrawObject(Object* obj, camera* cam)
+void DrawObject(Object* obj, camera* cam, light * l)
 {
 	boIDS boID;
 	auto meshIt = obj->meshes->begin();
@@ -83,16 +83,25 @@ void DrawObject(Object* obj, camera* cam)
 
 		int textureCoords = glGetAttribLocation(shader, "vtex");
 		int vertexArray = glGetAttribLocation(shader, "vpos");
+		int normalArray = glGetAttribLocation(shader, "vnorm");
 
 
 		glEnableVertexAttribArray(vertexArray);
-		glVertexAttribPointer(vertexArray, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr);
+		glVertexAttribPointer(vertexArray, 4,
+			GL_FLOAT, GL_FALSE,
+			sizeof(Vertex), nullptr);
 
 		glEnableVertexAttribArray(textureCoords);
 		glVertexAttribPointer(textureCoords, 2,
 			GL_FLOAT, GL_FALSE,
 			sizeof(Vertex),
 			(void*)sizeof(glm::vec4));
+
+		glEnableVertexAttribArray(normalArray);
+		glVertexAttribPointer(normalArray, 3,
+			GL_FLOAT, GL_FALSE,
+			sizeof(Vertex),
+			(void*)(sizeof(glm::vec4) + sizeof(glm::vec2)));
 
 		//activa la unidad de textura a usar
 		glActiveTexture(GL_TEXTURE0);
@@ -122,7 +131,17 @@ void DrawObject(Object* obj, camera* cam)
 		//	no esta transpuesta la matriz
 		//	le paso el apuntador al primer valor de la matriz
 		glUniformMatrix4fv(uniformMVP, 1, GL_FALSE, &MVP[0][0]);
+		glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_FALSE, &Model[0][0]);
 
+
+		//le paso al shader los valores que espera recibir como globales
+		glUniform1f(glGetUniformLocation(shader, "lightAmb"), 0.2f);
+		//glUniform1i(glGetUniformLocation(shader, "lightType"), l->type);
+		//glUniform3fv(glGetUniformLocation(shader, "lightPos"),1, &l->pos[0]);
+		glUniform3fv(glGetUniformLocation(shader, "lightDir"),1, &l->dir[0]);
+		glUniform3fv(glGetUniformLocation(shader, "eyePos"),1, &cam->position[0]);
+		glUniform3fv(glGetUniformLocation(shader, "lookAt"),3, &cam->lookAt[0]);
+		glUniform1i(glGetUniformLocation(shader, "matShininess"), (*matIt)->shininess);
 
 		//glColor3f(1.0f, 1.0f, 1.0f);
 		//glDrawArrays(GL_TRIANGLES, 0, 3);

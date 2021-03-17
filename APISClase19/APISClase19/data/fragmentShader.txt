@@ -1,11 +1,48 @@
 #version 330
 in vec2 ftex;
+in vec3 fnorm;
+in vec3 fpos;
 in vec4 vertexColor;
+
+uniform lightAmb;
+uniform int lightType;  //directional | point
+uniform vec3 lightDir; //luz direccional
+uniform vec3 lightPos; //luz point
+uniform vec3 eyePos; //camera pos
+uniform vec3 lookAt; 
+uniform int matShininess;
+
 uniform sampler2D texSampler;
+
 out vec4 fragColor;
 
 void main()
 {
-	/*fragColor=vertexColor;*/
-	gl_FragColor=texture2D(texSampler,ftex);
+	vec4 lightComponent;
+	vec4 finalColor;
+	vec4 baseColor;
+	vec4 amb;
+	vec4 diffuse;
+	vec4 specular;
+
+	vec3 norm = normalize(fnorm);
+	baseColor = texture2D(texSampler,ftex);
+	//compute ambiental light
+	amb = vec4(lightAmb,lightAmb,lightAmb,1);
+
+	//compute diffuse
+	//dot -> cos (angulo) entre 2 vecotres
+	float fdiff = max(dot(norm, normalize(lightDir)), 0.0);
+	diffuse = vec4(fdiff, fdiff, fdiff, 1.0);
+
+	//compute specular
+	vec3 viewDir=normalize(eyePos-fpos);
+	vec3 reflectDir=reflect(-lightDir, norm);
+	float fspec = pow(max(dot(viewDir, reflectDir),0.0), matShininess);
+	specular = vec4(fspec, fspec, fspec,1.0);
+
+	lightComponent = amb + diffuse + specular;
+	finalColor = baseColor*(lightComponent);
+
+	gl_FragColor = finalColor;
 }

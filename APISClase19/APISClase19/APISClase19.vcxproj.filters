@@ -39,6 +39,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -62,6 +65,9 @@
     <ClInclude Include="Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="data\fragmentShader.txt">
@@ -73,6 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="data\cube.msh">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\lightCube.msh">
       <Filter>data</Filter>
     </None>
   </ItemGroup>

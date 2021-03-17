@@ -7,12 +7,14 @@
 struct Material
 {
 	Texture* texture;
+	int shininess;
 	int shaderID;
 };
 
 struct Vertex {
 	glm::vec4 position;
 	glm::vec2 texCoord;
+	glm::vec3 normal;
 
 	void FlipUpsdedown();
 };

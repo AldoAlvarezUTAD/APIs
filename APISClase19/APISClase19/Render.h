@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <map>
 #include "camera.h"
+#include "light.h"
 
 
 //buffer objects ids
@@ -17,4 +18,4 @@ struct boIDS
 
 void UploadObject(Object* obj);
 void DeleteObject(Object* obj);
-void DrawObject(Object* obj, camera* cam);
+void DrawObject(Object* obj, camera* cam, light* l);

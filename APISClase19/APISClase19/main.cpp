@@ -9,6 +9,7 @@
 #include "camera.h"
 
 
+
 int main(int argc, char** argv)
 {
 	glfwInit();
@@ -31,9 +32,16 @@ int main(int argc, char** argv)
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0f));
 
+	light* l = createLight(DIR_LIGHT,
+		glm::vec3(0.0f, 0.0f, 3.0f),
+		glm::vec3(0.0f, 0.0f, 1.0f),
+		glm::vec4(1.0f, 1.0f, 1.0f,1.0f));
+
+
 	//Object* triangle = CreateTriangle();
 	//Object* cube = CreateObjectFromFile("data/cube.msh");
-	Object* cube = CreateObjectFromFile("data/asian_town.msh");
+	Object* cube = CreateObjectFromFile("data/lightCube.msh");
+	//Object* cube = CreateObjectFromFile("data/asian_town.msh");
 
 	//lo llevo a la tarjeta grafica
 	UploadObject(cube);
@@ -50,7 +58,7 @@ int main(int argc, char** argv)
 		//de que lo cambie al final del frame
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		DrawObject(cube, cam);
+		DrawObject(cube, cam, l);
 
 		glfwSwapBuffers(window);
 		//se ejecutan el resto de eventos, si es que hay

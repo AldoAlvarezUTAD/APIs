@@ -1,13 +1,21 @@
 #version 330
 uniform mat4 MVP;
+uniform mat4 model;
 in vec4 vpos;
 in vec2 vtex;
+in vec3 vnorm;
 out vec2 ftex;
+out vec3 fnorm;
+out vec3 fpos;
 out vec4 vertexColor;
 
 void main()
 {
 	gl_Position=MVP*vpos;
-	vertexColor=vec4(1.0f,1.0f,1.0f,1.0f);
+	//muevo las normales, las reajusto
+	fnorm=(transpose(inverse(model))*vec4(vnorm.xyz,1.0f)).xyz;
+	vertexColor=vec4(1.0f,0.0f,0.0f,1.0f);
+	//la pos del fragmento es la pos del vertice + la pos del objeto
+	fpos=(model*vpos).xyz;
 	ftex=vtex;
 }
