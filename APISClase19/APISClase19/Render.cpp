@@ -135,7 +135,7 @@ void DrawObject(Object* obj, camera* cam, light * l)
 
 
 		//le paso al shader los valores que espera recibir como globales
-		glUniform1f(glGetUniformLocation(shader, "lightAmb"), 1.0f);
+		glUniform1f(glGetUniformLocation(shader, "lightAmb"), 0.2f);
 		glUniform1i(glGetUniformLocation(shader, "lightType"), l->type);
 		glUniform3fv(glGetUniformLocation(shader, "lightPos"),1, &l->pos[0]);
 		glUniform3fv(glGetUniformLocation(shader, "lightDir"),1, &l->dir[0]);

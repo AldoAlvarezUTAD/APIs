@@ -33,7 +33,7 @@ void main()
 		lightDirFinal = normalize(lightDir);
 	}
 	//es luz puntual
-	if(lightType == 0)
+	if(lightType == 1)
 	{
 	//fpos -> el punto que se va a iluminar
 	//fragment position
