@@ -18,7 +18,7 @@ private:
 	glm::vec3 right;
 
 	glm::vec3 lookAt;
-	float movementSpeed = 1.0f;
+	float movementSpeed = 0.1f;
 	float rotationSpeed = 1.0f;
 
 	void Move(float deltaTime);

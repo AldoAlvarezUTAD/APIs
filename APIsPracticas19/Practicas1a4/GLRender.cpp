@@ -27,7 +27,7 @@ void GLRender::SetupObject(Object3D * obj)
 
 
 		Mesh3D*objMesh = obj->GetMesh(mesh);
-		objMesh->FlipTextureUpsideDown();
+		//objMesh->FlipTextureUpsideDown();
 
 		int vertexSize = objMesh->GetVertices().size();
 		int vertexIDsSize = objMesh->GetVertexIdxList().size();

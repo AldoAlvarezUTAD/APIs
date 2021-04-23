@@ -1,0 +1,23 @@
+#version 330
+
+//nuevo iluminacion
+in vec3 vnormal;
+uniform mat4 model;
+out vec3 fpos;
+out vec3 fnormal;
+
+
+uniform mat4 MVP;
+in vec4 vpos;
+in vec2 vtex;
+
+out vec2 ftex;
+
+
+void main()
+{
+	gl_Position=MVP*vpos;
+	fnorm=(transpose(inverse(model))*vec4(vnormal.xyz,1.0f)).xyz;
+	fpos=(model*vpos).xyz;
+	ftex=vtex;
+}

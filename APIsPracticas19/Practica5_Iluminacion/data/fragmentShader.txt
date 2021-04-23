@@ -1,0 +1,91 @@
+#version 330
+
+//iluminacion | practica 5
+uniform int totalLights;
+uniform vec4 lightAmb;
+unifrm vec3 lightColor;
+
+uniform int lightType;  //directional | point
+uniform vec3 lightDir;
+uniform vec3 lightPos;
+uniform vec3 eyePos;
+uniform vec3 lookAt; 
+uniform int matShininess;
+uniform float specAtt;
+uniform vec4 diffuseColor;
+
+in vec3 fpos;
+in vec3 fnormal;
+
+
+
+
+in vec2 ftex;
+in vec4 vertexColor;
+uniform sampler2D texSampler;
+out vec4 fragColor;
+
+void main()
+{
+	vec4 diffuse = vec3(0,0,0);
+	vec4 specular = vec3(0,0,0);
+	vec3 lightDirFinal;
+	vec3 norm = normalize(fnorm);
+	float attenuation = 1.0;
+	vec4 baseColor = texture2D(texSampler, ftex);
+
+	if(totalLights>0) {
+		diffuse = lightAmb;
+	}
+
+
+	//es luz direccional
+	if(lightType == 0)
+	{
+		lightDirFinal = normalize(lightDir);
+	}
+	//es luz puntual
+	else if(lightType == 1)
+	{
+		float constAtt = 1.0;
+		float linearAtt = 0.0;
+		float quadAtt = 0.0;
+
+		vec3 L = lightPos - fpos;
+		lightDirFinal = normalize(L);
+		float dist = lenght(L);
+
+		
+		attenuation = 1.0 / (constAtt + (linearAtt*dist) + (quadAtt*dist));
+	}
+
+
+	// DIFFUSE
+	float cosNL = max(dot(norm, normalize(lightDirFinal)), 0.0);
+	diffuse = diffuseColor * lighAmb * cosNL * attenuation;
+
+
+	// SPECULAR
+	if(specAtt>0 && cosNL > 0)
+	{
+		// calculamos la specular
+		// vector H
+		vec3 viewDir = normalize(eyePos - fpos);
+		vec3 reflectDir = reflect(-lightDirFinal, norm);
+		float fspec = pow(max(dot(viewDir, reflectDir),0.0), matShininess);
+		specular = vec4(fspec, fspec, fspec, 1.0) * specAtt;
+	}
+
+
+	// SUM LIGHTS
+	vec4 amb = vec4(lightAmb.x, lightAmb.y, lightAmb.z, 1.0);
+	vec4 lightComponent = diffuse;
+	if(totalLights > 0)
+	{
+		lightComponent = amb + diffuse + specular;
+	}
+	vec4 finalColor = baseColor * (lightComponent);
+
+
+	gl_FragColor = finalColor;
+}
